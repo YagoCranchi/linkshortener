@@ -18,7 +18,7 @@ import github.yagocranchi.linkshortener.entities.Role;
 import github.yagocranchi.linkshortener.entities.User;
 import github.yagocranchi.linkshortener.repository.RoleRepository;
 import github.yagocranchi.linkshortener.repository.UserRepository;
-import github.yagocranchi.linkshortener.controller.dto.CreateUserDTO;
+import github.yagocranchi.linkshortener.controller.dto.CreateUserDto;
 
 @RestController
 public class UserController {
@@ -37,7 +37,7 @@ public class UserController {
     
     @PostMapping("/users")
     @Transactional
-    public ResponseEntity<Void> newUser(@RequestBody CreateUserDTO dto) {
+    public ResponseEntity<Void> newUser(@RequestBody CreateUserDto dto) {
         
         var userFromDB = userRepository.findByUsername(dto.username());
         if(userFromDB.isPresent()) {
