@@ -24,7 +24,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 import java.util.stream.Collectors;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 public class LinkController {
@@ -47,7 +49,13 @@ public class LinkController {
 
         var user = userRepository.findById(UUID.fromString(token.getName()));
 
+        long linkId = Stream.generate(() -> ThreadLocalRandom.current().nextLong(100_000_000_000L, 1_000_000_000_000L))
+                            .filter(id -> !linkRepository.existsById(id))
+                            .findFirst()
+                            .orElseThrow();
+
         var link = new Link();
+        link.setLinkId(linkId);
         link.setUser(user.get());
         link.setContent(dto.content());
 
